@@ -1,8 +1,8 @@
 const float LW = 180, LB = 70;
 const float RW = 180, RB = 70; 
 const float LM = 125, RM = 125;
-int LS_count = 3;
-int US_count = 3;
+const int LS_count = 3;
+const int US_count = 3;
 
 
 void fl(float speed_f, float speed_b){

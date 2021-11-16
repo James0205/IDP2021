@@ -1,5 +1,7 @@
 #include "basic.h"
 #include "line_follow.h"
+#include "IR.h"
+#include "tests.h"
 
 void setup() {
   AFMS.begin();
@@ -8,6 +10,8 @@ void setup() {
   pinMode(button_port, INPUT);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(IR_port_TSOP, INPUT);
+  pinMode(IR_port_diff, INPUT);
   red_blink(1000);
   //while(button() == 0){}
   delay(500);
@@ -32,12 +36,13 @@ void task1() {
 
 
 int test_state = 0;
+bool print_label = true;
 void test1(){
   int value = Serial.parseInt();
-  if (value!=0){ test_state = value;}
-  if (test_state == 1){LS_test_r(); }
-  if (test_state == 2){LS_test(); }
-  if (test_state == 3){US_test(); }
-  if (test_state == 4){run(255,255); delay(2000); run(0,0); delay(2000); run(-255, -255); delay(2000);run(0,0); delay(2000);}
-  if(test_state == 10){task1();red_blink(10000);}
+  if (value!=0){ test_state = value; print_label = true;}
+  if (test_state == 1){LS_test_r(&print_label);}
+  if (test_state == 2){LS_test(&print_label); }
+  if (test_state == 3){US_test(&print_label); }
+  if (test_state == 4){motor_test(&print_label);}
+  if(test_state == 10){task1();gr_blink(5000);}
 }

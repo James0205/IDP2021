@@ -8,7 +8,7 @@ const float right_white = 640, right_black = 960;
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
-const int red_LED_port = 13, button_port = 12;
+const int red_LED_port = 13, button_port = 12, green_LED_port = 11;
 
 const int trigPin = 7; // Trigger Pin of Ultrasonic Sensor
 const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
@@ -16,6 +16,7 @@ const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
 unsigned long US_time_out = 6000;
 
 const int left_motor_port = 3, right_motor_port = 4;
+
 Adafruit_DCMotor *L_Motor = AFMS.getMotor(left_motor_port);
 Adafruit_DCMotor *R_Motor = AFMS.getMotor(right_motor_port);
 
@@ -93,6 +94,30 @@ void red_blink(int t){
   red_LED(0);
 }
 
+void green_LED(int value){
+  if (value == 0) {digitalWrite(green_LED_port, LOW);}
+  else if (value == 1){digitalWrite(green_LED_port, HIGH);}
+}
+
+void green_blink(int t){
+  green_LED(1);
+  delay(t);
+  green_LED(0);
+}
+
+void gr_LED(int value){
+  if (value == 0) {digitalWrite(red_LED_port, LOW);digitalWrite(green_LED_port, LOW);}
+  else if (value == 1){digitalWrite(red_LED_port, HIGH);digitalWrite(red_LED_port, HIGH);}
+}
+
+void gr_blink(int t){
+  green_LED(1);
+  red_LED(1);
+  delay(t);
+  green_LED(0);
+  red_LED(0);
+}
+
 float LS_L(){
   float sensor_value = LS_L_r();
   float result = map_n(sensor_value, left_black, left_white, 0, 255);
@@ -119,27 +144,4 @@ long US() {
    if (duration == 0){result=0;}
    else {result =duration / 29 / 2;}
    return result;
-}
-
-void US_test(){
-     Serial.println(US());
-}
-
-
-void LS_test_r(){
-  Serial.print(LS_L_r());
-  Serial.print(", ");
-  Serial.println(LS_R_r());
-}
-
-void LS_test_v(){
-  Serial.print(LS_L_v());
-  Serial.print(", ");
-  Serial.println(LS_R_v());
-}
-
-void LS_test(){
-  Serial.print(LS_L());
-  Serial.print(", ");
-  Serial.println(LS_R());
 }
