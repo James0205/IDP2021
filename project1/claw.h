@@ -1,3 +1,5 @@
+#include <Servo.h> 
+
 Servo gripservo, iiftservo;
 
 int servo_port_grip = 9; // inner one, brown out
