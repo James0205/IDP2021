@@ -8,7 +8,7 @@ const float right_white = 640, right_black = 960;
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
-const int red_LED_port = 13, button_port = 12, green_LED_port = 11;
+const int red_LED_port = 13, button_port = 12, green_LED_port = 11, yellow_LED_port = 10;
 
 const int trigPin = 7; // Trigger Pin of Ultrasonic Sensor
 const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
@@ -116,6 +116,11 @@ void gr_blink(int t){
   delay(t);
   green_LED(0);
   red_LED(0);
+}
+
+bool toggle_yellow_led(void *) {
+  digitalWrite(yellow_LED_port, !digitalRead(yellow_LED_port)); // toggle the LED
+  return true; // repeat? true
 }
 
 float LS_L(){

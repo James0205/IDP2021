@@ -1,36 +1,32 @@
-const int pingPin = A1; // Trigger Pin of Ultrasonic Sensor
-const int echoPin = A0; // Echo Pin of Ultrasonic Sensor
+const int pingPin = 9; // Trigger Pin of Ultrasonic Sensor
+const int echoPin = 8; // Echo Pin of Ultrasonic Sensor
 
 void setup() {
    Serial.begin(9600); // Starting Serial Terminal
-   pinMode(pingPin, OUTPUT);
-   pinMode(echoPin, INPUT);
 }
 
 void loop() {
-   while(Serial.parseInt() == 0){}
-   long last = US();
-   long value = last;
-   while(Serial.parseInt() == 0) {
-      value = US();
-     Serial.print(value);
-     Serial.print(", ");
-     Serial.println(value - last);
-     last = value;
-  }
-}
-
-long US(){
-    long duration, inches, cm;
-   
+   long duration, inches, cm;
+   pinMode(pingPin, OUTPUT);
    digitalWrite(pingPin, LOW);
    delayMicroseconds(2);
    digitalWrite(pingPin, HIGH);
    delayMicroseconds(10);
    digitalWrite(pingPin, LOW);
+   pinMode(echoPin, INPUT);
    duration = pulseIn(echoPin, HIGH);
-   cm = duration / 29 / 2;
-   return cm;
+   inches = microsecondsToInches(duration);
+   cm = microsecondsToCentimeters(duration);
+   Serial.print(inches);
+   Serial.print("in, ");
+   Serial.print(cm);
+   Serial.print("cm");
+   Serial.println();
+   delay(100);
+}
+
+long microsecondsToInches(long microseconds) {
+   return microseconds / 74 / 2;
 }
 
 long microsecondsToCentimeters(long microseconds) {

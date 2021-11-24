@@ -34,7 +34,7 @@ void motor_test(bool *print_label){
 int value = 0;
 void IR_test_diff(bool *print_label){
   if(*print_label == true){*print_label = false; Serial.println("IR Test Differentiation.");}
-  int result = IR_differentiate();
+  int result = IR_differentiate_test(1000);
   if(result==mixed){Serial.println("mixed");}
   if(result == zigzag){Serial.println("zigzag");}
   if(result == sqr){Serial.println("square");}
@@ -50,17 +50,18 @@ void IR_test_raw(bool *print_label){
 
 void IR_counter_test(bool *print_label){
   if(*print_label == true){*print_label = false; Serial.println("IR receiver counter Test.");}
-  Serial.println(IR_counter(),6);
+  Serial.println(IR_counter(1000),6);
 }
 
 void servo_test(bool *print_label){
   if(*print_label == true){
     *print_label = false; 
-    Serial.println("Servo test. What do you want to do? Rise (1), Grab (2), or Deploy (3)?");
+    Serial.println("Servo test. What do you want to do? Rise (1), Grab (2), Deploy (3), or Half Rise (4)?");
     int input = Serial.parseInt();
     while(input == 0){input = Serial.parseInt();}
     if (input == 1) {rise();}
     else if (input == 2) {grab();}
     else if (input == 3) {deploy();}
+    else if (input == 4) {half_rise();}
   }
 }

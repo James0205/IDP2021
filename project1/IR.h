@@ -1,4 +1,4 @@
-const int White=1; // block color Light: Green and Red
+  const int White=1; // block color Light: Green and Red
 const int Red=2; // Red
 const int Blue=3; // Green
 
@@ -17,11 +17,11 @@ bool dummy_detected(void){
   return result;
 }
 
-float IR_counter(){
+float IR_counter(unsigned long sample_time){
   float total = 0;
   float zeros = 0;
   bool result = true;
-  unsigned long t = millis()+1000;
+  unsigned long t = millis()+sample_time;
   while (millis() < t)
   {
     result = digitalRead(IR_port_TSOP);
@@ -33,16 +33,18 @@ float IR_counter(){
 }
 
 
-int IR_differentiate(void){
-  float ratio = IR_counter();
+int IR_differentiate_test(unsigned long sample_time){
+  float ratio = IR_counter(sample_time);
   if (ratio > (high_reference * offset)){return zigzag;}
   else if (ratio > (low_reference * offset)){ return mixed;}
   else {return sqr;}
 }
 
-/*int IR_differentiate2(void){
-  bool TSOP_peak = digitalRead(IR_port_TSOP_peak), diff_peak = digitalRead(IR_port_diff_peak);
-  if (TSOP_peak && !diff_peak){return zigzag;}
-  else if (diff_peak) {return 4;}
-  else if (!TSOP_peaks && !diff_peak) {return 0;}
-}*/
+int IR_differentiate()
+{
+  int dummy = IR_differentiate_test(2000);
+  if (dummy == White){gr_blink(5000);}
+  else if (dummy == Red) {red_blink(5000);}
+  else if (dummy == Blue) {green_blink(5000);} 
+  return dummy;
+}

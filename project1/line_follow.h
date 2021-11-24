@@ -161,5 +161,33 @@ void fl_US(int max_speed, int min_speed, long cm, bool blink_trigger){
   }
   run(0,0);
   if(blink_trigger){red_blink(500);}
-  
+}
+
+void turn_to_line_r(int Max_speed_time, bool blink_flag){
+  run(255, -255);delay(Max_speed_time);
+  if (blink_flag == true){run(0,0);gr_blink(1000);}
+  float R = LS_R();
+  while (R < RB){
+    R = LS_R();
+    run(120, -120);
+  }
+  while (R > RW){
+    R = LS_R();
+    run(60, -60);
+  }
+  run(0,0);delay(300);
+}
+
+void turn_to_line_l(int Max_speed_time, bool blink_flag){
+  run(-255, 255);delay(Max_speed_time);
+  float L = LS_L();
+  while (L < LB){
+    L = LS_L();
+    run(-120, 120);
+  }
+  while (L > LW){
+    L = LS_L();
+    run(-60, 60);
+  }
+  run(0,0);delay(300);
 }

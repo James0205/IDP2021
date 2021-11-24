@@ -4,6 +4,11 @@
 #include "servo_control.h"
 #include "tests.h"
 
+#include <arduino-timer.h>
+
+auto timer = timer_create_default(); // create a timer with default settings
+
+
 void setup() {
   AFMS.begin();
   Serial.begin(9600);
@@ -16,32 +21,63 @@ void setup() {
   pinMode(IR_port_TSOP, INPUT);
   servo_lift.attach(servo_lift_port);
   servo_claw.attach(servo_claw_port);
-  red_blink(1000);
-  //while(button() == 0){}
+  gr_blink(1000);
+  // while(button() == 0){}
   delay(500);
+  timer.every(500, toggle_yellow_led);
+  timer.at(1000, task_test);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //LS_test();
-  //fl_continue(255, -20);
-  //run(255, 255); delay(1000); run(0,0);
-  test1();
-  /*run(255, 255);
-  delay(1000);
-  run(0,0);*/
+  timer.tick();
+  //task_test();
 }
 
-void task1() {
-  cross_white(255, 50, 1, true);
-  fl_cross(255, -30, 1, 150, true);
-  fl_US(255, -100, 20, true);
+void task(){
+  int dummy = task1_0(true);
+  if (dummy == White){task1_W(true);}
+  if (dummy == Red || dummy == Blue){task1_RB(dummy, true);}
 }
+
+int task1_0(bool _test) {
+  half_rise();
+  cross_white(255, 50, 1, _test);
+  fl_cross(255, -30, 1, 150, _test);
+  fl_US(255, -30, 20, _test);
+  fl_US(130, -30, 4, _test);
+  int dummy = IR_differentiate();
+  grab();
+  return dummy;
+}
+
+void task1_W(bool _test){
+  fl_cross(255, -30, 1, 150, _test);
+  run(150, 150); delay(200); run(0,0);
+  deploy();
+  run(-150, -150); delay(200); run(0,0);
+  turn_to_line_l(250, false);
+  fl_time(255, -30, 1500, _test);
+}
+
+void task1_RB(int dummy, bool _test){
+  turn_to_line_l(250, false);
+  fl_cross(255, -30, 1, 150, _test);
+  if (dummy == Blue){run(-100, 100);}
+  else if (dummy == Red){run(100,-100);}
+  int delay_time_deploy_dummy = 300;
+  delay(delay_time_deploy_dummy);
+  run(0,0);
+  deploy();
+  if (dummy == Blue){turn_to_line_r(delay_time_deploy_dummy-80, true);}
+  else if (dummy == Red){turn_to_line_l(delay_time_deploy_dummy-80, true);}
+}
+
 
 
 int test_state = 0;
 bool print_label = true;
-void test1(){
+
+bool task_test(){
   int value = Serial.parseInt(); // all those test and be switched by typing the corresponding number
   if (value!=0){ test_state = value; print_label = true;}
   if (test_state == 1){LS_test_r(&print_label);} // line sensor left and right raw data (0 - 1023)
@@ -52,5 +88,6 @@ void test1(){
   if (test_state == 6){IR_test_raw(&print_label);} // IR return sensor port
   if (test_state == 7){IR_counter_test(&print_label);} // IR counter of 0 and 1 ratio in 1 second
   if (test_state == 8){servo_test(&print_label);} // test the servo, need to input another int to specify what action to take
-  if(test_state == 10){task1();gr_blink(5000);} // start the task
+  if(test_state == 10){task();gr_blink(5000);} // start the task
+  return true;
 }

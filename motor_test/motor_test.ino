@@ -6,7 +6,7 @@
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
 
-int moter_port = 3; // the moter port to test
+int moter_port = 1; // the moter port to test
 Adafruit_DCMotor *myMotor = AFMS.getMotor(moter_port);
 
 
