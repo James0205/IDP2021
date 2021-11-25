@@ -2,26 +2,25 @@
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
-const float left_white = 44, left_black = 800; // should be raw data (0 - 1023)
-const float right_white = 640, right_black = 960;
+const float left_white = 44, left_black = 570; // should be raw data (0 - 1023)
+const float right_white = 520, right_black = 576;
 
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
-const int red_LED_port = 13, button_port = 12, green_LED_port = 11, yellow_LED_port = 10;
+const int red_LED_port = 9, button_port = 12, green_LED_port = 10, yellow_LED_port = 8;
 
-const int trigPin = 7; // Trigger Pin of Ultrasonic Sensor
-const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
+const int trigPin = 1; // Trigger Pin of Ultrasonic Sensor
+const int echoPin = 2; // Echo Pin of Ultrasonic Sensor
 
 unsigned long US_time_out = 6000;
-
 const int left_motor_port = 3, right_motor_port = 4;
 
 Adafruit_DCMotor *L_Motor = AFMS.getMotor(left_motor_port);
 Adafruit_DCMotor *R_Motor = AFMS.getMotor(right_motor_port);
 
 
-const int left_light_sensor_port = A0, right_light_sensor_port = A1; 
+const int left_light_sensor_port = A2, right_light_sensor_port = A1; 
 
   
 void run(int left_speed, int right_speed)
@@ -116,6 +115,10 @@ void gr_blink(int t){
   delay(t);
   green_LED(0);
   red_LED(0);
+}
+
+void yellow_blink(int t){
+  digitalWrite(yellow_LED_port, 1);delay(t); digitalWrite(yellow_LED_port, 0);
 }
 
 bool toggle_yellow_led(void *) {

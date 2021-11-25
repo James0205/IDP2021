@@ -10,8 +10,10 @@ const float high_reference = 0.0731;
 const float low_reference=0.0364;
 const float offset=0.9;
 
+int diff_blink_t = 100;
 
-const int IR_port_TSOP_peak = 5, IR_port_diff_peak = 3, IR_port_TSOP = 5, IR_port_QSD = 6;
+const int IR_port_TSOP_peak = 5, IR_port_diff_peak = 3;
+const int IR_port_TSOP = 6, IR_port_QSD = 7;
 bool dummy_detected(void){
   bool result = digitalRead(IR_port_TSOP_peak) || digitalRead(IR_port_diff_peak);
   return result;
@@ -43,8 +45,20 @@ int IR_differentiate_test(unsigned long sample_time){
 int IR_differentiate()
 {
   int dummy = IR_differentiate_test(2000);
-  if (dummy == White){gr_blink(5000);}
-  else if (dummy == Red) {red_blink(5000);}
-  else if (dummy == Blue) {green_blink(5000);} 
+  if (dummy == White){gr_blink(diff_blink_t);}
+  else if (dummy == Red) {red_blink(diff_blink_t);}
+  else if (dummy == Blue) {green_blink(diff_blink_t);} 
   return dummy;
+}
+
+int IR_search()
+{
+  run(150, -150);
+  float ratio = IR_counter(18);
+  if (ratio > (low_reference * offset)){return 1;}
+  else {return 0;}
+}
+
+void IR_search_test(){
+  Serial.println(IR_search());
 }

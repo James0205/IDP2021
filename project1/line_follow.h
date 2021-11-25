@@ -169,25 +169,28 @@ void turn_to_line_r(int Max_speed_time, bool blink_flag){
   float R = LS_R();
   while (R < RB){
     R = LS_R();
-    run(120, -120);
+    run(200, -200);
   }
+  delay(50);
   while (R > RW){
     R = LS_R();
-    run(60, -60);
+    run(150, -150);
   }
   run(0,0);delay(300);
 }
 
 void turn_to_line_l(int Max_speed_time, bool blink_flag){
-  run(-255, 255);delay(Max_speed_time);
+  run(-255, 255); delay(Max_speed_time);
+  if (blink_flag == true){run(0,0);gr_blink(1000);}
   float L = LS_L();
   while (L < LB){
     L = LS_L();
-    run(-120, 120);
+    run(-200, 200);
   }
+  delay(50);
   while (L > LW){
     L = LS_L();
-    run(-60, 60);
+    run(-150, 150);
   }
   run(0,0);delay(300);
 }
