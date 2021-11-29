@@ -34,7 +34,7 @@ void motor_test(bool *print_label){
 int value = 0;
 void IR_test_diff(bool *print_label){
   if(*print_label == true){*print_label = false; Serial.println("IR Test Differentiation.");}
-  int result = IR_differentiate_test(1000);
+  int result = IR_differentiate(1000);
   if(result==mixed){Serial.println("mixed");}
   if(result == zigzag){Serial.println("zigzag");}
   if(result == sqr){Serial.println("square");}
@@ -47,6 +47,7 @@ void IR_test_raw(bool *print_label){
   bool TSOP = digitalRead(IR_port_TSOP);
   Serial.println(TSOP);
 }
+
 
 void IR_counter_test(bool *print_label){
   if(*print_label == true){*print_label = false; Serial.println("IR receiver counter Test.");}
@@ -65,4 +66,36 @@ void servo_test(bool *print_label){
     else if (input == 4) {attach_all_servo();half_rise();}
     else if (input == 5) {detach_all_servo();}
   }
+}
+
+
+
+void IR_search_test_stationary(bool *print_label){
+  Serial.println(IR_search());
+  if(*print_label == true){*print_label = false; Serial.println("IR test, green light blinking!");}
+}
+
+void IR_search_test_r(bool *print_label){
+  if(*print_label == true){*print_label = false; Serial.println("IR test search, rotate right! Type the desired offset, more means more rotation");
+    int input = Serial.parseInt();
+    while(input == 0){input = Serial.parseInt();}
+    unsigned long offset = input;
+    Serial.print("offset set at: ");Serial.println(offset);
+    IR_search_r(input);
+  }
+}
+
+void turn_around_test(bool *print_label){
+  if(*print_label == true){*print_label = false; Serial.println("Turn around Test. Type delay.");
+    int input = Serial.parseInt();
+    while(input == 0){input = Serial.parseInt();}
+    unsigned long offset = input;
+    Serial.print("Time set at: ");Serial.println(offset);
+    turn_around(100, 1, input, true);
+  }
+}
+
+void digital_test(bool *print_label){
+  Serial.println(digitalRead(button_port));
+  if(*print_label == true){*print_label = false; Serial.println("digital port test!");}
 }

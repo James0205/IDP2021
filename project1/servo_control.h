@@ -3,7 +3,7 @@ Servo servo_lift, servo_claw;
 
 const int servo_lift_port = 10, servo_claw_port = 9; // inner one 9, outer one 10
 
-const int pos_lift = 130, pos_lay = 33, pos_catch = 163, pos_release = 35, pos_put = 35, pos_half_lift = 100;
+const int pos_lift = 110, pos_lay = 32, pos_catch = 163, pos_release = 35, pos_put = 35, pos_half_lift = 100;
 
 void half_lift(){
   servo_lift.write(pos_half_lift);
@@ -32,6 +32,11 @@ void ini(){
   releasse();
 }
 
+void ini_h(){
+  lift();
+  releasse();
+}
+
 void rise(){
   lift();
   releasse();
@@ -54,9 +59,20 @@ void grab(){
 void deploy(){
   servo_lift.write(pos_put);
   delay(600);
+  int total_time = 4000;
+  int position_extra = 60;
+  int every_step = total_time / position_extra;
+  int claw_value = pos_catch;
+  unsigned long t = millis();
+  while (claw_value > pos_catch - 30){
+    claw_value -= 1;
+    servo_claw.write(claw_value);
+    delay(every_step);
+  }
   releasse();
   delay(500);
-  half_lift();
+  run(-255, -255); delay(200);run(0,0);
+  lift();
   delay(500);
 }
 
