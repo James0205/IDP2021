@@ -32,6 +32,7 @@ void task_test(){
   if (test_state == 14){turn_around_test(&print_label);}
   if (test_state == 15){Serial.println(IRd_b());Serial.println(IRd_b_avr());}
   if (test_state == 16){Serial.println(IRd_f());Serial.println(IRd_f_avr());}
+  if (test_state == 17){Serial.println(task2_search());}
   if(button() == 0){yellow_blink(500);task();gr_blink(5000);} // start the task
   // return true;
 }

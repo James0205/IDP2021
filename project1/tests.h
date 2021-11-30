@@ -86,12 +86,14 @@ void IR_search_test_r(bool *print_label){
 }
 
 void turn_around_test(bool *print_label){
-  if(*print_label == true){*print_label = false; Serial.println("Turn around Test. Type delay.");
+  if(*print_label == true){*print_label = false; Serial.println("Turn around Test. Type delay and then spd.");
     int input = Serial.parseInt();
     while(input == 0){input = Serial.parseInt();}
     unsigned long offset = input;
     Serial.print("Time set at: ");Serial.println(offset);
-    turn_around(100, 1, input, true);
+    while(input == 0){input = Serial.parseInt();}
+    int spd = 100;
+    turn_around(spd, 1, input, true);
   }
 }
 

@@ -2,8 +2,8 @@
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
-const float left_white = 70, left_black = 573; // should be raw data (0 - 1023)
-const float right_white = 505, right_black = 580;
+const float left_white = 25, left_black = 550; // should be raw data (0 - 1023)
+const float right_white = 25, right_black = 560;
 
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
@@ -162,7 +162,12 @@ long US() {
 
 void turn_around(int spd, int dir, unsigned long t, bool blink_flag){
   unsigned long reference = millis() + t;
-  run(spd*dir, -spd*dir); while (millis() < reference){}
-  run(-50, 50);delay(10);run(0,0);
+  int l = spd*dir; int r = spd*dir*(-1);
+  run(l, r); while (millis() < reference){}
+  run(-50*dir, 50*dir);delay(10);run(0,0);
   if(blink_flag){gr_blink(500);}
+}
+
+void dummy_offset(){
+  run(100, 100);delay(200);run(0,0);delay(100);
 }

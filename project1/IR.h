@@ -10,7 +10,7 @@ const float high_reference = 0.0731;
 const float low_reference=0.0364;
 const float offset=0.8;
 
-int diff_blink_t = 100;
+int diff_blink_t = 4000;
 
 const int IR_port_TSOP_peak = 5, IR_port_diff_peak = 3;
 const int IR_port_TSOP = 6, IR_port_QSD = 7;
@@ -41,6 +41,7 @@ int IR_differentiate(unsigned long sample_time){
 int IR_differentiate_blink()
 {
   int dummy = IR_differentiate(2000);
+  digitalWrite(yellow_LED_port, 0);
   if (dummy == White){gr_blink(diff_blink_t);}
   else if (dummy == Red) {red_blink(diff_blink_t);}
   else if (dummy == Blue) {green_blink(diff_blink_t);} 
@@ -83,7 +84,7 @@ void IR_search_r(unsigned long IR_search_r_offset)
 }
 
 
-unsigned long IR_search_r_offset_std = 175;
+unsigned long IR_search_r_offset_std = 140;
 unsigned long each_step_time = 2500;
 
 int US_approach = 25;
