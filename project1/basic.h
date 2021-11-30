@@ -169,5 +169,5 @@ void turn_around(int spd, int dir, unsigned long t, bool blink_flag){
 }
 
 void dummy_offset(){
-  run(100, 100);delay(200);run(0,0);delay(100);
+  run(100, 100);delay(300);run(0,0);delay(100);
 }

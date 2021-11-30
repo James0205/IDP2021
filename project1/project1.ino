@@ -29,10 +29,17 @@ void task_test(){
   if (test_state == 11){IR_search_test_r(&print_label);}
   if (test_state == 12){IR_approach();}
   if (test_state == 13){IRd_b_avr();}
-  if (test_state == 14){turn_around_test(&print_label);}
+  if (test_state == 14){turn_around_test_slow(&print_label);}
   if (test_state == 15){Serial.println(IRd_b());Serial.println(IRd_b_avr());}
   if (test_state == 16){Serial.println(IRd_f());Serial.println(IRd_f_avr());}
   if (test_state == 17){Serial.println(task2_search());}
+  if (test_state == 18){Serial.println(QSD_search());}
+  if (test_state == 19){QSD_search_test_r(&print_label);}
+  if (test_state == 20){Serial.println(QSD_counter(50),6);}
+  if (test_state == 21){QSD_approach();}
+  if (test_state == 22){Serial.println(task3_search());}
+  if (test_state == 23){turn_around_test_fast(&print_label);}
+  if (test_state == 24){cross_white(180, 2400, 1, true);}
   if(button() == 0){yellow_blink(500);task();gr_blink(5000);} // start the task
   // return true;
 }
@@ -52,9 +59,8 @@ void setup() {
   pinMode(button_port, INPUT);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(IR_port_TSOP_peak, INPUT);
-  pinMode(IR_port_diff_peak, INPUT);
   pinMode(IR_port_TSOP, INPUT);
+  pinMode(QSD_port, INPUT);
   gr_blink(1000);
   attach_all_servo();
   ini_h();

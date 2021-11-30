@@ -84,8 +84,8 @@ int IRd_b_avr(){
 }
 
 int IRd_b(){
-  if (IRd_b_avr() > IRd_b_reference) {red_LED(1); return 1;}
-  else {red_LED(0); return 0;}
+  if (IRd_b_avr() > IRd_b_reference) {return 1;}
+  else { return 0;}
 }
 
 int IRd_approach_dummy(){

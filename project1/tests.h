@@ -85,7 +85,17 @@ void IR_search_test_r(bool *print_label){
   }
 }
 
-void turn_around_test(bool *print_label){
+void QSD_search_test_r(bool *print_label){
+  if(*print_label == true){*print_label = false; Serial.println("IR test search, rotate right! Type the desired offset, more means more rotation");
+    int input = Serial.parseInt();
+    while(input == 0){input = Serial.parseInt();}
+    unsigned long offset = input;
+    Serial.print("offset set at: ");Serial.println(offset);
+    QSD_search_r(input);
+  }
+}
+
+void turn_around_test_slow(bool *print_label){
   if(*print_label == true){*print_label = false; Serial.println("Turn around Test. Type delay and then spd.");
     int input = Serial.parseInt();
     while(input == 0){input = Serial.parseInt();}
@@ -97,6 +107,17 @@ void turn_around_test(bool *print_label){
   }
 }
 
+void turn_around_test_fast(bool *print_label){
+  if(*print_label == true){*print_label = false; Serial.println("Turn around Test. Type delay and then spd.");
+    int input = Serial.parseInt();
+    while(input == 0){input = Serial.parseInt();}
+    unsigned long offset = input;
+    Serial.print("Time set at: ");Serial.println(offset);
+    while(input == 0){input = Serial.parseInt();}
+    int spd = 200;
+    turn_around(spd, 1, input, true);
+  }
+}
 void digital_test(bool *print_label){
   Serial.println(digitalRead(button_port));
   if(*print_label == true){*print_label = false; Serial.println("digital port test!");}

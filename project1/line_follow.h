@@ -196,7 +196,7 @@ void turn_to_line_r(int Max_speed_time, bool blink_flag){
   while (R > RW){
     R = LS_R();
     run(150, -150);
-  }
+  }delay(30);
   run(0,0);delay(300);
 }
 
@@ -212,6 +212,6 @@ void turn_to_line_l(int Max_speed_time, bool blink_flag){
   while (L > LW){
     L = LS_L();
     run(-150, 150);
-  }
+  }delay(30);
   run(0,0);delay(300);
 }

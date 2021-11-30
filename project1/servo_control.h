@@ -59,8 +59,8 @@ void grab(){
 void deploy(){
   servo_lift.write(pos_put);
   delay(600);
-  int total_time = 4000;
-  int position_extra = 60;
+  int total_time = 5000;
+  int position_extra = 70;
   int every_step = total_time / position_extra;
   int claw_value = pos_catch;
   unsigned long t = millis();
