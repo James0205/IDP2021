@@ -40,14 +40,14 @@ void task1_RB(int dummy, bool _test){
 bool search_test = true;
 int task2_search(){
   unsigned long t1 = 3200;
-  unsigned long t2 = 7800;
+  unsigned long t2 = 8600;
   unsigned long t3 = 3800;
-  unsigned long t4 = 9000;
-  int value = IR_search();
+  unsigned long t4 = 9500;
   int IR_flag = 0, right_flag = 1;
   turn_around(100, 1, t1, search_test);
   run(100, -100);
   unsigned long reference = t2+millis();
+  int value = IR_search();
   while (IR_flag == 0 && millis() < reference){
     value = IR_search();
     if (value == 1){IR_flag = 1;}
@@ -105,7 +105,7 @@ int task3_search(){
 int task2_0(bool _test){
   turn_to_line_l(2500, _test);
   attach_all_servo();
-  ini();
+  ini();capture();
   fl_time(255, -30, 3500, _test);
   int right_flag = task2_search();
   if (right_flag == -1){run(0,0);return -1;}
@@ -126,7 +126,7 @@ int task2_0(bool _test){
 int task3_0(bool _test){
   turn_to_line_l(2500, _test);
   attach_all_servo();
-  ini();
+  ini();capture();
   fl_time(255, -30, 3500, _test);
   int right_flag = task3_search();
   if (right_flag == -1){run(0,0);return -1;}
@@ -199,10 +199,10 @@ void task(){
     run(255, 255);delay(2200);run(0,0);
   }
   else{
-    dummy = task2_0(false);
-    if (dummy == White){task1_W(false);}
+    dummy = task2_0(false);    if (dummy == White){task1_W(false);}
     else if (dummy == Red || dummy == Blue){task1_RB(dummy, false);}
     else if (dummy == -1){task_null();attach_all_servo();delay(200);ini_h();run(255, 255);delay(2200);run(0,0);gr_blink(10000);}
+    
     dummy = task3_0(false);
     if (dummy == White){task3_W(false);}
     else if (dummy == Red || dummy == Blue){task3_RB(dummy, false);}
@@ -211,4 +211,23 @@ void task(){
     ini_h();
     run(255, 255);delay(2200);run(0,0);
   }
+}
+void segment1(){
+    int dummy = task2_0(false);
+    if (dummy == White){task3_W(true);}
+    else if (dummy == Red || dummy == Blue){task3_RB(dummy, true);}
+    else if (dummy == -1) {task_null();}
+    attach_all_servo();delay(200);
+    ini_h();
+    run(255, 255);delay(2200);run(0,0);
+}
+
+void segment2(){
+    int dummy = task3_0(false);
+    if (dummy == White){task3_W(true);}
+    else if (dummy == Red || dummy == Blue){task3_RB(dummy, true);}
+    else if (dummy == -1) {task_null();}
+    attach_all_servo();delay(200);
+    ini_h();
+    run(255, 255);delay(2200);run(0,0);
 }

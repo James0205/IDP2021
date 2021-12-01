@@ -30,7 +30,7 @@ void toggle_yellow_led_r() {
 unsigned long blink_period = millis();
 void run(int left_speed, int right_speed)
 {
-  left_speed = (float)left_speed * (-1.0);
+  left_speed = (float)left_speed * (-0.97);
   right_speed = (float)right_speed * (-1.0);
   if ((millis() - blink_period) > 500){blink_period = millis(); toggle_yellow_led_r();}
   if (left_speed == -1000 || left_speed == 1000) {}
@@ -169,5 +169,5 @@ void turn_around(int spd, int dir, unsigned long t, bool blink_flag){
 }
 
 void dummy_offset(){
-  run(100, 100);delay(300);run(0,0);delay(100);
+  run(160, 160);delay(300);run(0,0);delay(100);
 }

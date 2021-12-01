@@ -1,4 +1,3 @@
-
 void US_test(bool *print_label){
   if(*print_label == true){*print_label = false; Serial.println("Ultrasonic Sensor Test.");}
   Serial.println(US());

@@ -40,7 +40,10 @@ void task_test(){
   if (test_state == 22){Serial.println(task3_search());}
   if (test_state == 23){turn_around_test_fast(&print_label);}
   if (test_state == 24){cross_white(180, 2400, 1, true);}
-  if(button() == 0){yellow_blink(500);task();gr_blink(5000);} // start the task
+  if (test_state == 25){segment2();}
+  if (test_state == 26){segment1();}
+  if (test_state == 27){fl_cross(255, -30, 1, 150, true);gr_blink(1000);}
+  if(button() == 0){yellow_blink(500);task();} // start the task
   // return true;
 }
 

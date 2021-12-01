@@ -140,15 +140,15 @@ void IR_search_r(unsigned long IR_search_r_offset)
 }
 
 
-unsigned long IR_search_r_offset_std = 140;
+unsigned long IR_search_r_offset_std = 120;
 unsigned long QSD_search_r_offset_std = 50;
-unsigned long each_step_time = 2500;
+unsigned long each_step_time = 1500;
 
 int US_approach = 25;
 int US_catch = 8;
 
 void IR_approach(){
-  ini();
+  ini();capture();
   int count = 0;
   while (count < IRd_count){
     IR_search_r(IR_search_r_offset_std);
@@ -169,7 +169,7 @@ void IR_approach(){
 
 
 void QSD_approach(){
-  ini();
+  ini();capture();
   int count = 0;
   while (count < IRd_count){
     QSD_search_r(QSD_search_r_offset_std);

@@ -60,7 +60,7 @@ void fl_cross(int max_speed, int min_speed, int lines, int traverse_time, bool b
     if (counted > LS_count){
       counted = 0;
       if (blink_trigger) {run(0,0);red_blink(1000);}
-      run(max_speed, max_speed); 
+      run(max_speed, max_speed); while(LS_L()>LW && LS_R()>RW){}
       delay(traverse_time);
       run(0,0);
       if (blink_trigger) {red_blink(1000);}

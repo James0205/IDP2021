@@ -33,7 +33,7 @@ void ini(){
 }
 
 void ini_h(){
-  lift();
+  lift();delay(200);
   releasse();
 }
 
