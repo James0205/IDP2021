@@ -3,6 +3,7 @@ const int IRd_count = 3;
 
 int find_max(int arr[])
 {
+  // find max of an int array
     int n = sizeof(arr) / sizeof(arr[0]);
     int maximum = arr[0];
     for (int j = 0; j < n; ++j) {
@@ -15,6 +16,7 @@ int find_max(int arr[])
 
 int find_min(int arr[])
 {
+  // find min of an int array
     int n = sizeof(arr) / sizeof(arr[0]);
     int minimum = arr[0];
     for (int j = 0; j < n; ++j) {
@@ -29,6 +31,7 @@ int result[6];
 
 
 int IRd_f_avr(){
+  // find the average of 6 readings from front IR distance sensor at the front
   int sensor_value;
   //Serial.println("Here are the raw data.");
   for (int j = 0; j<6; j++){
@@ -54,12 +57,14 @@ int IRd_f_avr(){
 
 const int IRd_f_reference = 300;
 int IRd_f(){
+  // return 0 or 1 (undetected or detected) for front IR distance sensor
   if (IRd_f_avr() > IRd_f_reference) {green_LED(1);return 1;}
   else {green_LED(0);return 0;}
 }
 
 const int IRd_b_reference = 300;
 int IRd_b_avr(){
+  // find the average of 6 readings from back IR distance sensor
   int sensor_value;
   //Serial.println("Here are the raw data.");
   for (int j = 0; j<6; j++){
@@ -84,6 +89,7 @@ int IRd_b_avr(){
 }
 
 int IRd_b(){
+  // return 0 or 1 (undetected or detected) for the back IR distance sensor
   if (IRd_b_avr() > IRd_b_reference) {return 1;}
   else { return 0;}
 }

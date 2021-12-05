@@ -7,13 +7,14 @@
 #include "task.h"
 #include <arduino-timer.h>
 
-auto timer = timer_create_default(); // create a timer with default settings
+// auto timer = timer_create_default(); // create a timer with default settings
 
 
 int test_state = 0;
 bool print_label = true;
 
 void task_test(){
+  /* task_test is what is actually executed, which incorporates the tests (initiated by typing numbers into the monitor) and the task (initiated by pressing the button) */
   int value = Serial.parseInt(); // all those test and be switched by typing the corresponding number
   if (value!=0){ test_state = value; print_label = true;}
   if (test_state == 1){LS_test_r(&print_label);} // line sensor left and right raw data (0 - 1023)
@@ -43,15 +44,12 @@ void task_test(){
   if (test_state == 25){segment2();}
   if (test_state == 26){segment1();}
   if (test_state == 27){fl_cross(255, -30, 1, 150, true);gr_blink(1000);}
-  if(button() == 0){yellow_blink(500);task();} // start the task
+  if (test_state == 28){cross_white(180, 150, 1,true);}
+  if(test_state == 29){task3_search();}
+  if(button() == 0){yellow_blink(500); task();} // start the task
   // return true;
 }
 
-
-void competition() {  
-  task();
-  // return true; // repeat? true
-}
 
 void setup() {
   Serial.begin(9600);

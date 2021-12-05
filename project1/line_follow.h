@@ -1,11 +1,12 @@
-const float LW = 150, LB = 70;
-const float RW = 150, RB = 70; 
-const float LM = 125, RM = 125;
-const int LS_count = 4;
+const float LW = 180, LB = 100;
+const float RW = 180, RB = 100; 
+const float LM = 140, RM = 140;
+const int LS_count = 2;
 const int US_count = 4;
 
 
 void fl(float speed_f, float speed_b){
+  // basic follow line
   float L = LS_L(), R = LS_R();
   if (L > LW){
     run(speed_b, speed_f);
@@ -19,6 +20,7 @@ void fl(float speed_f, float speed_b){
 }
 
 void fl_pid(float max_speed, float min_speed, float k){
+  // basic follow line with pid
   float L = LS_L(), R = LS_R();
   float delta = L - R; 
   float l_speed = 0, r_speed = 0;
@@ -30,6 +32,7 @@ void fl_pid(float max_speed, float min_speed, float k){
 }
 
 void fl_pid_stop(int max_speed, int min_speed, float k){
+  // follow line pid and stop at cross
   float L = LS_L(), R = LS_R();
   while (L<LW || R<RW) {
     L = LS_L();
@@ -40,6 +43,7 @@ void fl_pid_stop(int max_speed, int min_speed, float k){
 }
 
 void fl_stop(int max_speed, int min_speed ){
+  // follow line and stop at cross
   float L = LS_L(), R = LS_R();
   while (L<LW || R<RW) {
     L = LS_L();
@@ -51,12 +55,12 @@ void fl_stop(int max_speed, int min_speed ){
 
 
 void fl_cross(int max_speed, int min_speed, int lines, int traverse_time, bool blink_trigger){
-  //traverse_time in ms
+  // follow line with given speed and cross given number of lines, each with given traverse time. 
   float L = LS_L(), R = LS_R();
   int lines_passed = 0;
   int counted = 0;
   while (lines_passed < lines) {
-    if (L>LW && R>RW){counted += 1;} else{counted = 0;}
+    if (L>LM && R>RM){counted += 1;} else{counted = 0;}
     if (counted > LS_count){
       counted = 0;
       if (blink_trigger) {run(0,0);red_blink(1000);}
@@ -75,7 +79,7 @@ void fl_cross(int max_speed, int min_speed, int lines, int traverse_time, bool b
 
 
 void fl_pid_cross(int max_speed, int min_speed, float k, int lines, int traverse_time, bool blink_trigger){
-  //traverse_time in ms
+  // follow line pid with given speed and cross given number of lines, each with given traverse time. 
   float L = LS_L(), R = LS_R();
   int lines_passed = 0;
   while (lines_passed < lines) {
@@ -94,18 +98,7 @@ void fl_pid_cross(int max_speed, int min_speed, float k, int lines, int traverse
 }
 
 void cross_white(int spd, int t, int line_num, bool blink_trigger){
- /* float L = LS_L(), R = LS_R();
-  int count = 0;
-  
-    count = 0;
-    while (count < LS_count){
-      run(spd, spd);
-      L = LS_L();
-      R = LS_R();
-      if (L > LW && R>RW){count += 1;}
-    }
-    run(0,0);*/
-  
+  // cross given number of white lines with speed and traverse time
   float L = LS_L(), R = LS_R();
   int count = 0;
   for (int line_crossed = 0; line_crossed<line_num; line_crossed++){
@@ -114,7 +107,7 @@ void cross_white(int spd, int t, int line_num, bool blink_trigger){
       run(spd, spd);
       L = LS_L();
       R = LS_R();
-      if (L > LW && R>RW){count += 1;}
+      if (L > LW || R>RW){count += 1;}else{count = 0;}
     }
     if(blink_trigger){run (0,0); red_blink(500);}
     count = 0;
@@ -122,7 +115,7 @@ void cross_white(int spd, int t, int line_num, bool blink_trigger){
       run(spd, spd);
       L = LS_L();
       R = LS_R();
-      if (L < LB || R<RB){count += 1;}
+      if (L < LB || R<RB){count += 1;}else{count = 0;}
     }
     if(blink_trigger){run (0,0); red_blink(500);}
     run(spd, spd);
@@ -133,6 +126,7 @@ void cross_white(int spd, int t, int line_num, bool blink_trigger){
 }
 
 void fl_time(int max_speed, int min_speed, unsigned long t, bool blink_trigger){
+  // follow line for a given time
   //elapsed_time in ms
   float L = LS_L(), R = LS_R();
   unsigned long t_end = millis() + t;
@@ -149,6 +143,7 @@ void fl_time(int max_speed, int min_speed, unsigned long t, bool blink_trigger){
 }
 
 void fl_US(int max_speed, int min_speed, long cm, bool blink_trigger){
+  // follow line until the ultrasonic sensor senses within a given distance
   float L = LS_L(), R = LS_R();
   long sensor_value = US();
   int count = 0;
@@ -167,6 +162,7 @@ void fl_US(int max_speed, int min_speed, long cm, bool blink_trigger){
 }
 
 void fl_IRd(int max_speed, int min_speed,bool blink_trigger){
+  // follow line until the IR distance sensor senses annything (a dummy)
   float L = LS_L(), R = LS_R();
   int sensor_value = IRd_b();
   int count = 0;
@@ -185,6 +181,7 @@ void fl_IRd(int max_speed, int min_speed,bool blink_trigger){
 }
 
 void turn_to_line_r(int Max_speed_time, bool blink_flag){
+  // turn right with a max_speed for a certain amount of time and then to white line
   run(255, -255);delay(Max_speed_time);
   if (blink_flag == true){run(0,0);gr_blink(1000);}
   float R = LS_R();
@@ -201,6 +198,7 @@ void turn_to_line_r(int Max_speed_time, bool blink_flag){
 }
 
 void turn_to_line_l(int Max_speed_time, bool blink_flag){
+  // turn left with a max_speed for a certain amount of time and then to white line
   run(-255, 255); delay(Max_speed_time);
   if (blink_flag == true){run(0,0);gr_blink(1000);}
   float L = LS_L();

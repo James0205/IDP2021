@@ -1,6 +1,8 @@
+/* This file contains all tasks for the competition */
+
 int task1_0(bool _test) {
   ini_h();
-  cross_white(255, 50, 1, _test);
+  cross_white(255, 150, 1, _test);
   fl_cross(255, -30, 1, 150, _test);
   fl_time(255, -30, 13000, _test);
   fl_IRd(160, -30, _test);
@@ -44,6 +46,7 @@ int task2_search(){
   unsigned long t3 = 3800;
   unsigned long t4 = 9500;
   int IR_flag = 0, right_flag = 1;
+  lay();capture();
   turn_around(100, 1, t1, search_test);
   run(100, -100);
   unsigned long reference = t2+millis();
@@ -55,7 +58,11 @@ int task2_search(){
   run(0,0);delay(100);red_blink(500);
   if (IR_flag == 1){run(-100, 100);delay(200);run(0,0);delay(200); return right_flag;}
   else{ // into right part
-    run(200, -200);while(LS_R() < RB){}delay(20); while(LS_R() > RW){}run(0,0);gr_blink(500);
+    run(200, -200);
+    int counted = 0;
+    while (counted < LS_count){if (LS_R()>RW){counted += 1;}else{counted = 0;}}
+    delay(30);counted = 0;
+    while(counted < LS_count){if (LS_R()<RB){counted += 1;}else{counted = 0;}}delay(50);
     turn_around(100, 1, t3, search_test);
     IR_flag = 0;  right_flag = 0;
     run(100, -100);
@@ -74,27 +81,36 @@ int task2_search(){
 }
 
 int task3_search(){
+  lay();capture();
   int value = QSD_search();
   int QSD_flag = 0, right_flag = 1;
-  run(100, -100);
-  while (QSD_flag == 0 && LS_R()<RB){
+  run(100, -100);delay(200);
+  int counted = 0;
+  while (QSD_flag == 0 && counted < LS_count){
+    if (LS_R()>RW){counted += 1;}else{counted = 0;}
     value = QSD_search();
+    Serial.println(value);
     if (value == 1){QSD_flag = 1;}
   }
   run(0,0);delay(100);red_blink(500);
   if (QSD_flag == 1){run(-100, 100);delay(200);run(0,0);delay(200); return right_flag;}
   else{ // into right part
-    run(100, -100);delay(30); while(LS_R() > RW){} delay(30);run(0,0);red_blink(500);
+    run(100, -100);delay(30); while(LS_R() > RW){} delay(100);run(0,0);//red_blink(500);
     QSD_flag = 0;  right_flag = 0;
     run(100, -100);
-    while (QSD_flag == 0 && LS_R()<RB){
+    counted = 0;
+    value = QSD_search();
+    QSD_flag = 0;
+    while (QSD_flag == 0 && counted < LS_count){
+      if (LS_R()>RW){counted += 1;}else{counted = 0;}
         value = QSD_search();
+        Serial.println(value);
         if (value == 1){QSD_flag = 1;}
       }
-    run(0,0);red_blink(500);
+    run(0,0);//red_blink(500);
     if (QSD_flag == 1){run(-100, 100);delay(200);run(0,0);delay(200);return right_flag;}
     else {// fail to detect any dummy
-         run(100,-100);while(LS_R() < RB){} delay(20);while(LS_R() > RW){}delay(20);run(0,0);delay(100);
+         run(100,-100); delay(20);while(LS_R() > RW){}delay(50);run(0,0);delay(100);
          return -1;
     }
   }

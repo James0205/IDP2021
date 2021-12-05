@@ -1,3 +1,6 @@
+/* This header file contains all the tests for the robot. */
+
+
 void US_test(bool *print_label){
   if(*print_label == true){*print_label = false; Serial.println("Ultrasonic Sensor Test.");}
   Serial.println(US());
@@ -54,9 +57,10 @@ void IR_counter_test(bool *print_label){
 }
 
 void servo_test(bool *print_label){
+  // servo test, type in a number for what servo operation you want!
   if(*print_label == true){
     *print_label = false; 
-    Serial.println("Servo test. What do you want to do? Rise (1), Grab (2), Deploy (3), or Half Rise (4), or detach (5)?");
+    Serial.println("Servo test. What do you want to do? Rise (1), Grab (2), Deploy (3), or Half Rise (4), or detach (5), or lay(6)?");
     int input = Serial.parseInt();
     while(input == 0){input = Serial.parseInt();}
     if (input == 1) {attach_all_servo();rise();}
@@ -64,6 +68,7 @@ void servo_test(bool *print_label){
     else if (input == 3) {attach_all_servo();deploy();}
     else if (input == 4) {attach_all_servo();half_rise();}
     else if (input == 5) {detach_all_servo();}
+    else if (input == 6) {lay();}
   }
 }
 

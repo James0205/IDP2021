@@ -24,12 +24,14 @@ const int left_light_sensor_port = A2, right_light_sensor_port = A1;
 
 
 void toggle_yellow_led_r() {
+  //change state for yellow LED
   digitalWrite(yellow_LED_port, !digitalRead(yellow_LED_port)); // toggle the LED
 }
 
 unsigned long blink_period = millis();
 void run(int left_speed, int right_speed)
 {
+  // vehicle run
   left_speed = (float)left_speed * (-0.97);
   right_speed = (float)right_speed * (-1.0);
   if ((millis() - blink_period) > 500){blink_period = millis(); toggle_yellow_led_r();}
@@ -60,26 +62,31 @@ void run(int left_speed, int right_speed)
 }
 
 float LS_L_r(){
+  // raw data for line sensor right
   float voltage = analogRead(left_light_sensor_port);
   return voltage;
 }
 
 float LS_R_r(){
+  // raw data for line sensor left
   float voltage = analogRead(right_light_sensor_port);
   return voltage;
 }
 
 float LS_L_v(){
+  // voltage data for line sensor left
   float voltage = analogRead(left_light_sensor_port) * 5.0 / 1023.0;
   return voltage;
 }
 
 float LS_R_v(){
+  // voltage data for line sensor right
   float voltage = analogRead(right_light_sensor_port) * 5.0 / 1023.0;
   return voltage;
 }
 
 float map_n(float x, float in_min, float in_max, float out_min, float out_max) {
+  // rewrite arduino map function for float
   float result = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
   return result;
 }
@@ -89,33 +96,39 @@ int button(){
 }
 
 void red_LED(int value){
+  // change red_LED
   if (value == 0) {digitalWrite(red_LED_port, LOW);}
   else if (value == 1){digitalWrite(red_LED_port, HIGH);}
 }
 
 void red_blink(int t){
+  // blink red LED
   red_LED(1);
   delay(t);
   red_LED(0);
 }
 
 void green_LED(int value){
+  // change green LED
   if (value == 0) {digitalWrite(green_LED_port, LOW);}
   else if (value == 1){digitalWrite(green_LED_port, HIGH);}
 }
 
 void green_blink(int t){
+  // blink green LED
   green_LED(1);
   delay(t);
   green_LED(0);
 }
 
 void gr_LED(int value){
+  // change green and red LED
   if (value == 0) {digitalWrite(red_LED_port, LOW);digitalWrite(green_LED_port, LOW);}
   else if (value == 1){digitalWrite(red_LED_port, HIGH);digitalWrite(red_LED_port, HIGH);}
 }
 
 void gr_blink(int t){
+  // blink green and red LED
   green_LED(1);
   red_LED(1);
   delay(t);
@@ -124,23 +137,27 @@ void gr_blink(int t){
 }
 
 void yellow_blink(int t){
+  // blink yellow LED
   digitalWrite(yellow_LED_port, 1);delay(t); digitalWrite(yellow_LED_port, 0);
 }
 
 
 
 bool toggle_yellow_led(void *) {
+  // toggle yellow red
   digitalWrite(yellow_LED_port, !digitalRead(yellow_LED_port)); // toggle the LED
   return true; // repeat? true
 }
 
 float LS_L(){
+  // processed (map to 0 - 255) data on line sensor left
   float sensor_value = LS_L_r();
   float result = map_n(sensor_value, left_black, left_white, 0, 255);
   return result;
 }
 
 float LS_R(){
+  // processed (map to 0 - 255) data on line sensor right
   float sensor_value = LS_R_r();
   float result = map_n(sensor_value, right_black, right_white, 0, 255);
   return result;
@@ -148,6 +165,7 @@ float LS_R(){
 
 
 long US() {
+  // ultrasonic sensor read in cm, with timeout
   long duration, result;
    digitalWrite(trigPin, LOW);
    delayMicroseconds(2);
@@ -161,6 +179,7 @@ long US() {
 }
 
 void turn_around(int spd, int dir, unsigned long t, bool blink_flag){
+  // turn around with fixed time and speed
   unsigned long reference = millis() + t;
   int l = spd*dir; int r = spd*dir*(-1);
   run(l, r); while (millis() < reference){}

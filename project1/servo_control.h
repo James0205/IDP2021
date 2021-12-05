@@ -5,6 +5,9 @@ const int servo_lift_port = 10, servo_claw_port = 9; // inner one 9, outer one 1
 
 const int pos_lift = 110, pos_lay = 32, pos_catch = 163, pos_release = 35, pos_put = 35, pos_half_lift = 100;
 
+// the following functions give combinations of the servo position and movements
+
+
 void half_lift(){
   servo_lift.write(pos_half_lift);
 }
@@ -57,6 +60,7 @@ void grab(){
 }
 
 void deploy(){
+  // deploy a dummy with the slow deploy method
   servo_lift.write(pos_put);
   delay(600);
   int total_time = 5000;
@@ -77,11 +81,13 @@ void deploy(){
 }
 
 void attach_all_servo(){
+  // attach all servo
   servo_lift.attach(servo_lift_port);
   servo_claw.attach(servo_claw_port);
 }
 
 void detach_all_servo(){
+  // detach all servo
   servo_lift.detach();
   servo_claw.detach();
 }
